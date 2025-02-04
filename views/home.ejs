@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+        .table {
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+        .table td, .table th {
+            text-align: center;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .url-generated {
+            background-color: #d1e7dd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            color: #0f5132;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+
+        <% if (locals.id) { %>
+            <div class="url-generated">
+                <p>URL Generated: <a href="http://localhost:8001/url/<%= id %>" target="_blank">http://localhost:8001/url/<%= id %></a></p>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/url" class="mb-4">
+            <div class="mb-3">
+                <label for="url" class="form-label">Enter your Original URL</label>
+                <input type="text" class="form-control" id="url" name="url" placeholder="https://example.com" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Short URL</button>
+        </form>
+
+        <% if (locals.urls) { %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Sr.no</th>
+                        <th>ShortId</th>
+                        <th>RedirectURL</th>
+                        <th>No. of clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% urls.forEach((url, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= url.ShortId %></td>
+                            <td><a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a></td>
+                            <td><%= url.visitHistory.length %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
